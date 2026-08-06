@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0A0A0A">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="description" content="JONE GOLF - Professional Golf Coaching Tour">
+<title>JONE GOLF</title>
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Sans+SC:wght@300;400;500;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        gold: { DEFAULT: '#C9A84C', light: '#E5C76B', dark: '#A88A3A' },
+        dark: { DEFAULT: '#0A0A0A', card: '#141414', surface: '#1E1E1E' }
+      },
+      fontFamily: {
+        sans: ['Noto Sans KR', 'Noto Sans SC', 'sans-serif'],
+        serif: ['Playfair Display', 'serif']
+      }
+    }
+  }
+}
+</script>
+
+<style>
+  * { -webkit-tap-highlight-color: transparent; }
+  body {
+    background: #0A0A0A;
+    color: #fff;
+    font-family: 'Noto Sans KR', 'Noto Sans SC', sans-serif;
+    overscroll-behavior-y: none;
+    -webkit-font-smoothing: antialiased;
+  }
+  .gold-text { color: #C9A84C; }
+  .gold-bg { background: linear-gradient(135deg, #C9A84C 0%, #E5C76B 50%, #C9A84C 100%); }
+  .gold-border { border-color: #C9A84C; }
+  .gold-gradient-text {
+    background: linear-gradient(135deg, #E5C76B, #C9A84C);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .screen {
+    display: none;
+    min-height: 100vh;
+    padding-bottom: 90px;
+    animation: fadeIn 0.3s ease;
+  }
+  .screen.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+  .nav-item { transition: all 0.2s; }
+  .nav-item.active { color: #C9A84C; }
+  .nav-item.active svg { stroke: #C9A84C; }
+
+  .stat-card {
+    background: linear-gradient(145deg, #141414, #1a1a1a);
+    border: 1px solid rgba(201,168,76,0.15);
+  }
+
+  .program-item {
+    background: linear-gradient(145deg, #141414, #1a1a1a);
+    border: 1px solid rgba(255,255,255,0.05);
+    transition: all 0.2s;
+  }
+  .program-item:active { transform: scale(0.98); }
+
+  .tour-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px;
+  }
+  .tour-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.3) 60%, transparent 100%);
+  }
+
+  .license-logo {
+    background: #fff;
+    border-radius: 8px;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  input, select, textarea {
+    background: #1E1E1E !important;
+    border: 1px solid rgba(255,255,255,0.1) !important;
+    color: #fff !important;
+    border-radius: 8px !important;
+    padding: 12px 16px !important;
+    width: 100% !important;
+    outline: none !important;
+    transition: border-color 0.2s;
+  }
+  input:focus, select:focus, textarea:focus {
+    border-color: #C9A84C !important;
+  }
+  input::placeholder, textarea::placeholder { color: #666 !important; }
+
+  .btn-gold {
+    background: linear-gradient(135deg, #C9A84C, #A88A3A);
+    color: #0A0A0A;
+    font-weight: 700;
+    border-radius: 10px;
+    padding: 14px 24px;
+    text-align: center;
+    transition: all 0.2s;
+    box-shadow: 0 4px 15px rgba(201,168,76,0.3);
+  }
+  .btn-gold:active { transform: scale(0.97); box-shadow: 0 2px 8px rgba(201,168,76,0.2); }
+
+  .hero-overlay {
+    background: linear-gradient(to bottom, rgba(10,10,10,0.2) 0%, rgba(10,10,10,0.6) 50%, #0A0A0A 100%);
+  }
+
+  .contact-btn {
+    background: rgba(201,168,76,0.1);
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #C9A84C;
+  }
+
+  .lang-option {
+    background: #141414;
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.2s;
+  }
+  .lang-option.selected {
+    border-color: #C9A84C;
+    background: rgba(201,168,76,0.08);
+  }
+
+  .install-step {
+    background: #141414;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    border: 1px solid rgba(255,255,255,0.05);
+  }
+
+  /* Scrollbar hide */
+  ::-webkit-scrollbar { display: none; }
+
+  .logo-spin {
+    animation: slowSpin 20s linear infinite;
+  }
+  @keyframes slowSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+</style>
+</head>
+
+<body class="bg-dark">
+
+<!-- Manifest injection -->
+<script>
+const manifest = {
+  "name": "JONE GOLF",
+  "short_name": "JONE GOLF",
+  "description": "Professional Golf Coaching Tour - China, Thailand, Malaysia, Vietnam, Korea",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#0A0A0A",
+  "theme_color": "#0A0A0A",
+  "orientation": "portrait",
+  "icons": [
+    { "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' fill='%230A0A0A' rx='32'/%3E%3Ctext x='96' y='110' font-size='80' text-anchor='middle' fill='%23C9A84C' font-family='serif'%3EJ%3C/text%3E%3C/svg%3E", "sizes": "192x192", "type": "image/svg+xml" },
+    { "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' fill='%230A0A0A' rx='80'/%3E%3Ctext x='256' y='300' font-size='220' text-anchor='middle' fill='%23C9A84C' font-family='serif'%3EJ%3C/text%3E%3C/svg%3E", "sizes": "512x512", "type": "image/svg+xml" }
+  ]
+};
+const manifestBlob = new Blob([JSON.stringify(manifest)], {type: 'application/json'});
+const manifestURL = URL.createObjectURL(manifestBlob);
+const link = document.createElement('link');
+link.rel = 'manifest';
+link.href = manifestURL;
+document.head.appendChild(link);
+</script>
+
+<!-- ==================== HOME SCREEN ==================== -->
+<section id="home" class="screen active relative">
+  <div class="relative h-[70vh] overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-emerald-900 via-slate-800 to-slate-900"></div>
+    <div class="absolute inset-0 opacity-30" style="background-image: url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'0.05\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
+    <div class="hero-overlay absolute inset-0"></div>
+
+    <!-- Header -->
+    <div class="absolute top-0 left-0 right-0 z-10 flex items-center justify-between px-5 pt-12 pb-4">
+      <div class="flex items-center gap-2">
+        <div class="w-10 h-10 rounded-full border-2 border-gold flex items-center justify-center">
+          <span class="text-gold font-serif text-xl font-bold">J</span>
+        </div>
+        <div>
+          <h1 class="text-white font-bold text-lg leading-tight">JONE GOLF</h1>
+          <p class="text-gray-400 text-[10px] tracking-widest">GOLF BEYOND BORDERS</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-4">
+        <button onclick="showScreen('language')" class="text-white opacity-80">
+          <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        </button>
+        <button class="text-white opacity-80">
+          <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Hero Content -->
+    <div class="absolute bottom-0 left-0 right-0 z-10 px-6 pb-8">
+      <h2 class="font-serif text-4xl text-white mb-1 leading-tight" data-i18n="hero_title">Professional<br>Golf Coaching Tour</h2>
+      <p class="text-gold text-lg mb-6 font-medium" data-i18n="hero_countries">China · Thailand · Malaysia<br>Vietnam · Korea</p>
+      <button onclick="showScreen('booking')" class="btn-gold w-full text-lg flex items-center justify-center gap-2">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        <span data-i18n="book_lesson">BOOK LESSON</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Quick Stats -->
+  <div class="px-5 mt-6">
+    <div class="grid grid-cols-4 gap-3">
+      <div class="stat-card rounded-xl p-3 text-center">
+        <div class="text-gold text-xl font-bold">30+</div>
+        <div class="text-gray-400 text-[10px] mt-1" data-i18n="stat_years">YEARS<br>EXPERIENCE</div>
+      </div>
+      <div class="stat-card rounded-xl p-3 text-center">
+        <div class="text-gold text-xl font-bold">68</div>
+        <div class="text-gray-400 text-[10px] mt-1" data-i18n="stat_best">CAREER BEST<br>(STROKES)</div>
+      </div>
+      <div class="stat-card rounded-xl p-3 text-center">
+        <div class="text-gold text-xl font-bold">1000+</div>
+        <div class="text-gray-400 text-[10px] mt-1" data-i18n="stat_students">STUDENTS<br>TRAINED</div>
+      </div>
+      <div class="stat-card rounded-xl p-3 text-center">
+        <div class="text-gold text-xl font-bold">20+</div>
+        <div class="text-gray-400 text-[10px] mt-1" data-i18n="stat_wins">TOURNAMENT<br>WINS</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Featured Programs Preview -->
+  <div class="px-5 mt-8">
+    <h3 class="text-gold text-sm font-bold tracking-wider mb-4" data-i18n="featured">FEATURED PROGRAMS</h3>
+    <div class="space-y-3">
+      <div class="program-item rounded-xl p-4 flex items-center gap-4" onclick="showScreen('program')">
+        <div class="w-14 h-14 rounded-lg bg-gradient-to-br from-emerald-800 to-slate-800 flex items-center justify-center text-2xl">🏌️</div>
+        <div class="flex-1">
+          <h4 class="text-white font-bold text-sm">VIP PRIVATE LESSON</h4>
+          <p class="text-gray-400 text-xs mt-0.5" data-i18n="vip_desc">1:1 맞춤 프라이빗 레슨</p>
+        </div>
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" class="text-gray-500"><path d="M9 18l6-6-6-6"/></svg>
+      </div>
+      <div class="program-item rounded-xl p-4 flex items-center gap-4" onclick="showScreen('program')">
+        <div class="w-14 h-14 rounded-lg bg-gradient-to-br from-amber-800 to-slate-800 flex items-center justify-center text-2xl">🏆</div>
+        <div class="flex-1">
+          <h4 class="text-white font-bold text-sm">ELITE JUNIOR</h4>
+          <p class="text-gray-400 text-xs mt-0.5" data-i18n="junior_desc">주니어 선수 육성 프로그램</p>
+        </div>
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" class="text-gray-500"><path d="M9 18l6-6-6-6"/></svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== PROFILE SCREEN ==================== -->
+<section id="profile" class="screen">
+  <div class="px-5 pt-12 pb-6">
+    <h2 class="text-gold text-center text-lg font-bold tracking-widest mb-6" data-i18n="coach_profile">COACH PROFILE</h2>
+
+    <div class="flex flex-col items-center">
+      <div class="w-32 h-32 rounded-full border-2 border-gold p-1 mb-4">
+        <div class="w-full h-full rounded-full bg-gradient-to-br from-slate-700 to-slate-900 flex items-center justify-center text-5xl">👤</div>
+      </div>
+      <h3 class="text-white text-2xl font-serif font-bold">J. ONE LEE</h3>
+      <p class="text-gold text-sm mb-4" data-i18n="golf_pro">Golf Professional</p>
+
+      <ul class="text-gray-300 text-sm space-y-1 text-center mb-6">
+        <li>• <span data-i18n="exp">30 Years Experience</span></li>
+        <li>• <span data-i18n="career_best">Career Best 68 Strokes</span></li>
+        <li>• USGTF</li>
+        <li>• WPGA</li>
+        <li>• ATPGA</li>
+        <li>• TPI Level 1</li>
+        <li>• <span data-i18n="pilates">Pilates Golf</span></li>
+      </ul>
+    </div>
+
+    <div class="grid grid-cols-4 gap-3 mb-8">
+      <div class="stat-card rounded-xl p-3 text-center">
+        <div class="text-gold text-xl font-bold">30+</div>
+        <div class="text-gray-400 text-[10px] mt-1" data-i18n="stat_years2">YEARS<br>EXPERIENCE</div>
+      </div>
+      <div class="stat-card rounded-xl p-3 text-center">
+        <div class="text-gold text-xl font-bold">68</div>
+        <div class="text-gray-400 text-[10px] mt-1" data-i18n="stat_best2">CAREER BEST<br>(STROKES)</div>
+      </div>
+      <div class="stat-card rounded-xl p-3 text-center">
+        <div class="text-gold text-xl font-bold">1000+</div>
+        <div class="text-gray-400 text-[10px] mt-1" data-i18n="stat_students2">STUDENTS<br>TRAINED</div>
+      </div>
+      <div class="stat-card rounded-xl p-3 text-center">
+        <div class="text-gold text-xl font-bold">20+</div>
+        <div class="text-gray-400 text-[10px] mt-1" data-i18n="stat_wins2">TOURNAMENT<br>WINS</div>
+      </div>
+    </div>
+
+    <h3 class="text-gold text-center text-sm font-bold tracking-wider mb-4" data-i18n="licenses">LICENSES</h3>
+    <div class="grid grid-cols-4 gap-3">
+      <div class="license-logo h-16">
+        <div class="text-center">
+          <div class="text-blue-900 font-bold text-[10px] leading-tight">USGTF</div>
+          <div class="text-[6px] text-gray-500 mt-0.5">UNITED STATES GOLF<br>TEACHERS FEDERATION</div>
+        </div>
+      </div>
+      <div class="license-logo h-16">
+        <div class="text-center">
+          <div class="text-purple-900 font-bold text-[10px] leading-tight">WPGA</div>
+          <div class="text-[6px] text-gray-500 mt-0.5">WORLD PROFESSIONAL<br>GOLFERS ASSOCIATION</div>
+        </div>
+      </div>
+      <div class="license-logo h-16">
+        <div class="text-center">
+          <div class="text-blue-800 font-bold text-[10px] leading-tight">ATPGA</div>
+          <div class="text-[6px] text-gray-500 mt-0.5">ASIA TOUR PROFESSIONAL<br>GOLFERS ASSOCIATION</div>
+        </div>
+      </div>
+      <div class="license-logo h-16">
+        <div class="text-center">
+          <div class="text-red-700 font-bold text-[10px] leading-tight">TPI</div>
+          <div class="text-[6px] text-gray-500 mt-0.5">CERTIFIED</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== PROGRAM SCREEN ==================== -->
+<section id="program" class="screen">
+  <div class="px-5 pt-12 pb-6">
+    <h2 class="text-gold text-center text-lg font-bold tracking-widest mb-6" data-i18n="lesson_program">LESSON PROGRAM</h2>
+
+    <div class="space-y-3">
+      <div class="program-item rounded-xl p-4 flex items-center gap-4">
+        <div class="w-14 h-14 rounded-lg bg-gradient-to-br from-green-800 to-slate-800 flex items-center justify-center text-2xl">🌱</div>
+        <div class="flex-1">
+          <h4 class="text-white font-bold text-sm">BEGINNER</h4>
+          <p class="text-gray-400 text-xs mt-0.5" data-i18n="beginner_desc">기본기부터 탄탄하게</p>
+        </div>
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" class="text-gray-500"><path d="M9 18l6-6-6-6"/></svg>
+      </div>
+
+      <div class="program-item rounded-xl p-4 flex items-center gap-4">
+        <div class="w-14 h-14 rounded-lg bg-gradient-to-br from-blue-800 to-slate-800 flex items-center justify-center text-2xl">📈</div>
+        <div class="flex-1">
+          <h4 class="text-white font-bold text-sm">INTERMEDIATE</h4>
+          <p class="text-gray-400 text-xs mt-0.5" data-i18n="intermediate_desc">스윙 교정 및 실력 향상</p>
+        </div>
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" class="text-gray-500"><path d="M9 18l6-6-6-6"/></svg>
+      </div>
+
+      <div class="program-item rounded-xl p-4 flex items-center gap-4">
+        <div class="w-14 h-14 rounded-lg bg-gradient-to-br from-amber-800 to-slate-800 flex items-center justify-center text-2xl">🏆</div>
+        <div class="flex-1">
+          <h4 class="text-white font-bold text-sm">ELITE JUNIOR</h4>
+          <p class="text-gray-400 text-xs mt-0.5" data-i18n="junior_desc2">주니어 선수 육성 프로그램</p>
+        </div>
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" class="text-gray-500"><path d="M9 18l6-6-6-6"/></svg>
+      </div>
+
+      <div class="program-item rounded-xl p-4 flex items-center gap-4">
+        <div class="w-14 h-14 rounded-lg bg-gradient-to-br from-purple-800 to-slate-800 flex items-center justify-center text-2xl">👑</div>
+        <div class="flex-1">
+          <h4 class="text-white font-bold text-sm">VIP PRIVATE LESSON</h4>
+          <p class="text-gray-400 text-xs mt-0.5" data-i18n="vip_desc2">1:1 맞춤 프라이빗 레슨</p>
+        </div>
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" class="text-gray-500"><path d="M9 18l6-6-6-6"/></svg>
+      </div>
+
+      <div class="program-item rounded-xl p-4 flex items-center gap-4">
+        <div class="w-14 h-14 rounded-lg bg-gradient-to-br from-red-800 to-slate-800 flex items-center justify-center text-2xl">⛳</div>
+        <div class="flex-1">
+          <h4 class="text-white font-bold text-sm">GOLF CAMP</h4>
+          <p class="text-gray-400 text-xs mt-0.5" data-i18n="camp_desc">단기 집중 골프 캠프</p>
+        </div>
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" class="text-gray-500"><path d="M9 18l6-6-6-6"/></svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== TOUR SCREEN ==================== -->
+<section id="tour" class="screen">
+  <div class="px-5 pt-12 pb-6">
+    <h2 class="text-gold text-center text-lg font-bold tracking-widest mb-6" data-i18n="tour_schedule">TOUR SCHEDULE</h2>
+
+    <div class="space-y-4">
+      <div class="tour-card h-24 relative">
+        <div class="absolute inset-0 bg-gradient-to-r from-red-900 via-slate-800 to-slate-900"></div>
+        <div class="absolute inset-0 flex items-center z-10 px-5">
+          <span class="text-2xl mr-3">🇨🇳</span>
+          <div>
+            <h4 class="text-white font-bold">CHINA</h4>
+            <p class="text-gray-300 text-sm">상하이</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="tour-card h-24 relative">
+        <div class="absolute inset-0 bg-gradient-to-r from-blue-900 via-slate-800 to-slate-900"></div>
+        <div class="absolute inset-0 flex items-center z-10 px-5">
+          <span class="text-2xl mr-3">🇹🇭</span>
+          <div>
+            <h4 class="text-white font-bold">THAILAND</h4>
+            <p class="text-gray-300 text-sm">방콕</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="tour-card h-24 relative">
+        <div class="absolute inset-0 bg-gradient-to-r from-emerald-900 via-slate-800 to-slate-900"></div>
+        <div class="absolute inset-0 flex items-center z-10 px-5">
+          <span class="text-2xl mr-3">🇲🇾</span>
+          <div>
+            <h4 class="text-white font-bold">MALAYSIA</h4>
+            <p class="text-gray-300 text-sm">JOHOR BAHRU</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="tour-card h-24 relative">
+        <div class="absolute inset-0 bg-gradient-to-r from-yellow-900 via-slate-800 to-slate-900"></div>
+        <div class="absolute inset-0 flex items-center z-10 px-5">
+          <span class="text-2xl mr-3">🇻🇳</span>
+          <div>
+            <h4 class="text-white font-bold">VIETNAM</h4>
+            <p class="text-gray-300 text-sm">호치민</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="tour-card h-24 relative">
+        <div class="absolute inset-0 bg-gradient-to-r from-indigo-900 via-slate-800 to-slate-900"></div>
+        <div class="absolute inset-0 flex items-center z-10 px-5">
+          <span class="text-2xl mr-3">🇰🇷</span>
+          <div>
+            <h4 class="text-white font-bold">KOREA</h4>
+            <p class="text-gray-300 text-sm">한국</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== BOOKING SCREEN ==================== -->
+<section id="booking" class="screen">
+  <div class="px-5 pt-12 pb-6">
+    <h2 class="text-gold text-center text-lg font-bold tracking-widest mb-6" data-i18n="booking_form">BOOKING FORM</h2>
+
+    <form id="bookingForm" class="space-y-4" onsubmit="handleBooking(event)">
+      <div>
+        <label class="text-gray-400 text-xs mb-1.5 block" data-i18n="label_name">Name (이름)</label>
+        <input type="text" placeholder="이름을 입력하세요" data-i18n-placeholder="ph_name" required>
+      </div>
+
+      <div>
+        <label class="text-gray-400 text-xs mb-1.5 block" data-i18n="label_phone">Phone (연락처)</label>
+        <input type="tel" placeholder="010-1234-5678" data-i18n-placeholder="ph_phone" required>
+      </div>
+
+      <div>
+        <label class="text-gray-400 text-xs mb-1.5 block" data-i18n="label_country">Country (국가)</label>
+        <select required>
+          <option value="" data-i18n="select_country">선택하세요</option>
+          <option value="kr">🇰🇷 Korea (한국)</option>
+          <option value="cn">🇨🇳 China (중국)</option>
+          <option value="th">🇹🇭 Thailand (태국)</option>
+          <option value="my">🇲🇾 Malaysia (말레이시아)</option>
+          <option value="vn">🇻🇳 Vietnam (베트남)</option>
+          <option value="other">🌏 Other (기타)</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="text-gray-400 text-xs mb-1.5 block" data-i18n="label_location">Preferred Location (희망 지역)</label>
+        <select required>
+          <option value="" data-i18n="select_location">선택하세요</option>
+          <option value="shanghai">🇨🇳 Shanghai (상하이)</option>
+          <option value="bangkok">🇹🇭 Bangkok (방콕)</option>
+          <option value="johor">🇲🇾 Johor Bahru</option>
+          <option value="hcmc">🇻🇳 Ho Chi Minh (호치민)</option>
+          <option value="korea">🇰🇷 Korea (한국)</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="text-gray-400 text-xs mb-1.5 block" data-i18n="label_date">Preferred Date (희망 날짜)</label>
+        <input type="date" required>
+      </div>
+
+      <div>
+        <label class="text-gray-400 text-xs mb-1.5 block" data-i18n="label_exp">Golf Experience (골프 경력)</label>
+        <select required>
+          <option value="" data-i18n="select_exp">선택하세요</option>
+          <option value="none" data-i18n="exp_none">입문 (처음)</option>
+          <option value="beginner" data-i18n="exp_beginner">초급 (1년 미만)</option>
+          <option value="intermediate" data-i18n="exp_intermediate">중급 (1~3년)</option>
+          <option value="advanced" data-i18n="exp_advanced">고급 (3년 이상)</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="text-gray-400 text-xs mb-1.5 block" data-i18n="label_message">Message (문의사항)</label>
+        <textarea rows="3" placeholder="문의사항을 입력하세요" data-i18n-placeholder="ph_message"></textarea>
+      </div>
+
+      <button type="submit" class="btn-gold w-full text-lg flex items-center justify-center gap-2 mt-6">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        <span data-i18n="book_now">BOOK NOW</span>
+      </button>
+    </form>
+  </div>
+</section>
+
+<!-- ==================== CONTACT SCREEN ==================== -->
+<section id="contact" class="screen">
+  <div class="px-5 pt-12 pb-6">
+    <h2 class="text-gold text-center text-lg font-bold tracking-widest mb-6" data-i18n="contact_us">CONTACT US</h2>
+
+    <div class="space-y-4">
+      <div class="program-item rounded-xl p-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <span class="text-2xl">🇰🇷</span>
+          <div>
+            <h4 class="text-white font-bold text-sm">KOREA</h4>
+            <p class="text-gray-400 text-sm">010-9424-7222</p>
+          </div>
+        </div>
+        <a href="tel:010-9424-7222" class="contact-btn">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        </a>
+      </div>
+
+      <div class="program-item rounded-xl p-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <span class="text-2xl">🇨🇳</span>
+          <div>
+            <h4 class="text-white font-bold text-sm">CHINA</h4>
+            <p class="text-gray-400 text-sm">185-0215-7079</p>
+          </div>
+        </div>
+        <a href="tel:18502157079" class="contact-btn">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-3 gap-3 mt-6">
+      <a href="#" class="install-step">
+        <div class="text-2xl mb-2">💬</div>
+        <div class="text-white text-xs font-bold">WeChat</div>
+      </a>
+      <a href="#" class="install-step">
+        <div class="text-2xl mb-2">📱</div>
+        <div class="text-white text-xs font-bold">WhatsApp</div>
+      </a>
+      <a href="#" class="install-step">
+        <div class="text-2xl mb-2">💛</div>
+        <div class="text-white text-xs font-bold">KakaoTalk</div>
+      </a>
+    </div>
+
+    <div class="mt-6 program-item rounded-xl p-4 flex items-center gap-3">
+      <svg width="20" height="20" fill="none" stroke="#C9A84C" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/></svg>
+      <span class="text-gray-300 text-sm">jonegolf.intl@gmail.com</span>
+    </div>
+
+    <p class="text-center text-gray-600 text-[10px] mt-8">© 2024 JONE GOLF INTERNATIONAL. ALL RIGHTS RESERVED.</p>
+  </div>
+</section>
+
+<!-- ==================== LANGUAGE SCREEN ==================== -->
+<section id="language" class="screen">
+  <div class="px-5 pt-12 pb-6">
+    <h2 class="text-gold text-center text-lg font-bold tracking-widest mb-8" data-i18n="language">LANGUAGE</h2>
+
+    <div class="space-y-3">
+      <div class="lang-option selected" onclick="setLang('ko')" id="lang-ko">
+        <span class="text-2xl">🇰🇷</span>
+        <span class="text-white font-medium">한국어</span>
+        <svg width="20" height="20" fill="none" stroke="#C9A84C" stroke-width="2" class="ml-auto check-icon"><path d="M20 6L9 17l-5-5"/></svg>
+      </div>
+
+      <div class="lang-option" onclick="setLang('zh')" id="lang-zh">
+        <span class="text-2xl">🇨🇳</span>
+        <span class="text-white font-medium">中文</span>
+        <svg width="20" height="20" fill="none" stroke="#C9A84C" stroke-width="2" class="ml-auto check-icon hidden"><path d="M20 6L9 17l-5-5"/></svg>
+      </div>
+
+      <div class="lang-option" onclick="setLang('en')" id="lang-en">
+        <span class="text-2xl">🇺🇸</span>
+        <span class="text-white font-medium">ENGLISH</span>
+        <svg width="20" height="20" fill="none" stroke="#C9A84C" stroke-width="2" class="ml-auto check-icon hidden"><path d="M20 6L9 17l-5-5"/></svg>
+      </div>
+    </div>
+
+    <button onclick="showScreen('home')" class="btn-gold w-full mt-8" data-i18n="close">CLOSE</button>
+  </div>
+</section>
+
+<!-- ==================== INSTALL SCREEN ==================== -->
+<section id="install" class="screen">
+  <div class="px-5 pt-12 pb-6">
+    <h2 class="text-gold text-center text-lg font-bold tracking-widest mb-2" data-i18n="install_app">INSTALL APP</h2>
+    <p class="text-gray-400 text-center text-sm mb-8" data-i18n="install_desc">홈 화면에 추가하여 앱처럼 사용해보세요!</p>
+
+    <div class="grid grid-cols-3 gap-3 mb-8">
+      <div class="install-step">
+        <div class="text-3xl mb-3">📤</div>
+        <div class="text-white text-xs font-bold mb-1" data-i18n="step1_title">1. 공유 버튼 클릭</div>
+        <div class="text-gray-500 text-[10px]" data-i18n="step1_desc">Safari 하단</div>
+      </div>
+      <div class="install-step">
+        <div class="text-3xl mb-3">➕</div>
+        <div class="text-white text-xs font-bold mb-1" data-i18n="step2_title">2. '홈 화면에 추가'</div>
+        <div class="text-gray-500 text-[10px]" data-i18n="step2_desc">메뉴에서 선택</div>
+      </div>
+      <div class="install-step">
+        <div class="text-3xl mb-3">✅</div>
+        <div class="text-white text-xs font-bold mb-1" data-i18n="step3_title">3. 추가 완료!</div>
+        <div class="text-gray-500 text-[10px]" data-i18n="step3_desc">아이콘 확인</div>
+      </div>
+    </div>
+
+    <button onclick="promptInstall()" class="btn-gold w-full mb-3" data-i18n="install_btn">홈 화면에 추가</button>
+    <button onclick="showScreen('home')" class="w-full py-3 text-gray-400 text-sm" data-i18n="close">CLOSE</button>
+  </div>
+</section>
+
+<!-- ==================== BOTTOM NAVIGATION ==================== -->
+<nav class="fixed bottom-0 left-0 right-0 bg-dark/95 backdrop-blur-lg border-t border-white/5 z-50 pb-safe">
+  <div class="flex justify-around items-center py-2 max-w-md mx-auto">
+    <button onclick="showScreen('home')" class="nav-item active flex flex-col items-center gap-1 px-3 py-1" data-nav="home">
+      <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg>
+      <span class="text-[10px] font-medium" data-i18n="nav_home">HOME</span>
+    </button>
+    <button onclick="showScreen('program')" class="nav-item flex flex-col items-center gap-1 px-3 py-1 text-gray-500" data-nav="program">
+      <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+      <span class="text-[10px] font-medium" data-i18n="nav_program">PROGRAM</span>
+    </button>
+    <button onclick="showScreen('tour')" class="nav-item flex flex-col items-center gap-1 px-3 py-1 text-gray-500" data-nav="tour">
+      <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      <span class="text-[10px] font-medium" data-i18n="nav_tour">TOUR</span>
+    </button>
+    <button onclick="showScreen('booking')" class="nav-item flex flex-col items-center gap-1 px-3 py-1 text-gray-500" data-nav="booking">
+      <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+      <span class="text-[10px] font-medium" data-i18n="nav_booking">BOOKING</span>
+    </button>
+    <button onclick="showScreen('contact')" class="nav-item flex flex-col items-center gap-1 px-3 py-1 text-gray-500" data-nav="contact">
+      <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      <span class="text-[10px] font-medium" data-i18n="nav_contact">CONTACT</span>
+    </button>
+  </div>
+</nav>
+
+<!-- Toast -->
+<div id="toast" class="fixed top-20 left-1/2 -translate-x-1/2 bg-dark-surface border border-gold/30 text-white px-6 py-3 rounded-xl shadow-2xl z-[100] hidden transition-all">
+  <span id="toastMsg">Message</span>
+</div>
+
+<script>
+// ==================== I18N ====================
+const i18n = {
+  ko: {
+    hero_title: "Professional<br>Golf Coaching Tour",
+    hero_countries: "China · Thailand · Malaysia<br>Vietnam · Korea",
+    book_lesson: "BOOK LESSON",
+    stat_years: "YEARS<br>EXPERIENCE", stat_best: "CAREER BEST<br>(STROKES)",
+    stat_students: "STUDENTS<br>TRAINED", stat_wins: "TOURNAMENT<br>WINS",
+    featured: "FEATURED PROGRAMS",
+    vip_desc: "1:1 맞춤 프라이빗 레슨", junior_desc: "주니어 선수 육성 프로그램",
+    coach_profile: "COACH PROFILE", golf_pro: "Golf Professional",
+    exp: "30 Years Experience", career_best: "Career Best 68 Strokes", pilates: "Pilates Golf",
+    stat_years2: "YEARS<br>EXPERIENCE", stat_best2: "CAREER BEST<br>(STROKES)",
+    stat_students2: "STUDENTS<br>TRAINED", stat_wins2: "TOURNAMENT<br>WINS",
+    licenses: "LICENSES",
+    lesson_program: "LESSON PROGRAM",
+    beginner_desc: "기본기부터 탄탄하게",
+    intermediate_desc: "스윙 교정 및 실력 향상",
+    junior_desc2: "주니어 선수 육성 프로그램",
+    vip_desc2: "1:1 맞춤 프라이빗 레슨",
+    camp_desc: "단기 집중 골프 캠프",
+    tour_schedule: "TOUR SCHEDULE",
+    booking_form: "BOOKING FORM",
+    label_name: "Name (이름)", ph_name: "이름을 입력하세요",
+    label_phone: "Phone (연락처)", ph_phone: "010-1234-5678",
+    label_country: "Country (국가)", select_country: "선택하세요",
+    label_location: "Preferred Location (희망 지역)", select_location: "선택하세요",
+    label_date: "Preferred Date (희망 날짜)",
+    label_exp: "Golf Experience (골프 경력)", select_exp: "선택하세요",
+    exp_none: "입문 (처음)", exp_beginner: "초급 (1년 미만)",
+    exp_intermediate: "중급 (1~3년)", exp_advanced: "고급 (3년 이상)",
+    label_message: "Message (문의사항)", ph_message: "문의사항을 입력하세요",
+    book_now: "BOOK NOW",
+    contact_us: "CONTACT US",
+    language: "LANGUAGE",
+    close: "CLOSE",
+    install_app: "INSTALL APP",
+    install_desc: "홈 화면에 추가하여 앱처럼 사용해보세요!",
+    step1_title: "1. 공유 버튼 클릭", step1_desc: "Safari 하단",
+    step2_title: "2. '홈 화면에 추가'", step2_desc: "메뉴에서 선택",
+    step3_title: "3. 추가 완료!", step3_desc: "아이콘 확인",
+    install_btn: "홈 화면에 추가",
+    nav_home: "HOME", nav_program: "PROGRAM", nav_tour: "TOUR",
+    nav_booking: "BOOKING", nav_contact: "CONTACT",
+    booking_success: "예약 신청이 완료되었습니다!"
+  },
+  zh: {
+    hero_title: "职业高尔夫<br>教学之旅",
+    hero_countries: "中国 · 泰国 · 马来西亚<br>越南 · 韩国",
+    book_lesson: "预约课程",
+    stat_years: "年<br>经验", stat_best: "最佳成绩<br>(杆数)",
+    stat_students: "学员<br>人数", stat_wins: "比赛<br>胜利",
+    featured: "精选课程",
+    vip_desc: "一对一私人定制课程", junior_desc: "青少年选手培养计划",
+    coach_profile: "教练简介", golf_pro: "职业高尔夫教练",
+    exp: "30年教学经验", career_best: "最佳成绩68杆", pilates: "普拉提高尔夫",
+    stat_years2: "年<br>经验", stat_best2: "最佳成绩<br>(杆数)",
+    stat_students2: "学员<br>人数", stat_wins2: "比赛<br>胜利",
+    licenses: "资质认证",
+    lesson_program: "课程项目",
+    beginner_desc: "从零开始打好基础",
+    intermediate_desc: "挥杆矫正与实力提升",
+    junior_desc2: "青少年选手培养计划",
+    vip_desc2: "一对一私人定制课程",
+    camp_desc: "短期集中高尔夫训练营",
+    tour_schedule: "巡回日程",
+    booking_form: "预约表单",
+    label_name: "姓名", ph_name: "请输入姓名",
+    label_phone: "电话", ph_phone: "010-1234-5678",
+    label_country: "国家", select_country: "请选择",
+    label_location: "希望地区", select_location: "请选择",
+    label_date: "希望日期",
+    label_exp: "高尔夫经验", select_exp: "请选择",
+    exp_none: "入门 (初次)", exp_beginner: "初级 (1年以下)",
+    exp_intermediate: "中级 (1-3年)", exp_advanced: "高级 (3年以上)",
+    label_message: "咨询内容", ph_message: "请输入咨询内容",
+    book_now: "立即预约",
+    contact_us: "联系我们",
+    language: "语言",
+    close: "关闭",
+    install_app: "安装应用",
+    install_desc: "添加到主屏幕，像应用一样使用！",
+    step1_title: "1. 点击分享按钮", step1_desc: "Safari底部",
+    step2_title: "2. '添加到主屏幕'", step2_desc: "从菜单中选择",
+    step3_title: "3. 添加完成！", step3_desc: "确认图标",
+    install_btn: "添加到主屏幕",
+    nav_home: "首页", nav_program: "课程", nav_tour: "巡回",
+    nav_booking: "预约", nav_contact: "联系",
+    booking_success: "预约申请已完成！"
+  },
+  en: {
+    hero_title: "Professional<br>Golf Coaching Tour",
+    hero_countries: "China · Thailand · Malaysia<br>Vietnam · Korea",
+    book_lesson: "BOOK LESSON",
+    stat_years: "YEARS<br>EXPERIENCE", stat_best: "CAREER BEST<br>(STROKES)",
+    stat_students: "STUDENTS<br>TRAINED", stat_wins: "TOURNAMENT<br>WINS",
+    featured: "FEATURED PROGRAMS",
+    vip_desc: "1:1 Custom Private Lesson", junior_desc: "Junior Player Development",
+    coach_profile: "COACH PROFILE", golf_pro: "Golf Professional",
+    exp: "30 Years Experience", career_best: "Career Best 68 Strokes", pilates: "Pilates Golf",
+    stat_years2: "YEARS<br>EXPERIENCE", stat_best2: "CAREER BEST<br>(STROKES)",
+    stat_students2: "STUDENTS<br>TRAINED", stat_wins2: "TOURNAMENT<br>WINS",
+    licenses: "LICENSES",
+    lesson_program: "LESSON PROGRAM",
+    beginner_desc: "Solid foundation from basics",
+    intermediate_desc: "Swing correction & skill improvement",
+    junior_desc2: "Junior Player Development Program",
+    vip_desc2: "1:1 Custom Private Lesson",
+    camp_desc: "Intensive Short-term Golf Camp",
+    tour_schedule: "TOUR SCHEDULE",
+    booking_form: "BOOKING FORM",
+    label_name: "Name", ph_name: "Enter your name",
+    label_phone: "Phone", ph_phone: "010-1234-5678",
+    label_country: "Country", select_country: "Select",
+    label_location: "Preferred Location", select_location: "Select",
+    label_date: "Preferred Date",
+    label_exp: "Golf Experience", select_exp: "Select",
+    exp_none: "Beginner (First time)", exp_beginner: "Beginner (Under 1 year)",
+    exp_intermediate: "Intermediate (1-3 years)", exp_advanced: "Advanced (Over 3 years)",
+    label_message: "Message", ph_message: "Enter your inquiry",
+    book_now: "BOOK NOW",
+    contact_us: "CONTACT US",
+    language: "LANGUAGE",
+    close: "CLOSE",
+    install_app: "INSTALL APP",
+    install_desc: "Add to home screen for app-like experience!",
+    step1_title: "1. Tap Share", step1_desc: "Bottom of Safari",
+    step2_title: "2. 'Add to Home Screen'", step2_desc: "Select from menu",
+    step3_title: "3. Done!", step3_desc: "Check icon",
+    install_btn: "Add to Home Screen",
+    nav_home: "HOME", nav_program: "PROGRAM", nav_tour: "TOUR",
+    nav_booking: "BOOKING", nav_contact: "CONTACT",
+    booking_success: "Booking request submitted!"
+  }
+};
+
+let currentLang = 'ko';
+
+function setLang(lang) {
+  currentLang = lang;
+  document.querySelectorAll('.lang-option').forEach(el => {
+    el.classList.remove('selected');
+    el.querySelector('.check-icon').classList.add('hidden');
+  });
+  document.getElementById('lang-' + lang).classList.add('selected');
+  document.getElementById('lang-' + lang).querySelector('.check-icon').classList.remove('hidden');
+  applyLang();
+}
+
+function applyLang() {
+  const dict = i18n[currentLang];
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (dict[key]) el.innerHTML = dict[key];
+  });
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    const key = el.getAttribute('data-i18n-placeholder');
+    if (dict[key]) el.placeholder = dict[key];
+  });
+}
+
+// ==================== NAVIGATION ====================
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+
+  document.querySelectorAll('.nav-item').forEach(n => {
+    n.classList.remove('active');
+    n.classList.add('text-gray-500');
+  });
+  const navBtn = document.querySelector(`[data-nav="${id}"]`);
+  if (navBtn) {
+    navBtn.classList.add('active');
+    navBtn.classList.remove('text-gray-500');
+  }
+}
+
+// ==================== BOOKING ====================
+function handleBooking(e) {
+  e.preventDefault();
+  showToast(i18n[currentLang].booking_success);
+  document.getElementById('bookingForm').reset();
+}
+
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  document.getElementById('toastMsg').textContent = msg;
+  toast.classList.remove('hidden');
+  setTimeout(() => toast.classList.add('hidden'), 2500);
+}
+
+// ==================== PWA INSTALL ====================
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+});
+
+function promptInstall() {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(() => { deferredPrompt = null; });
+  } else {
+    showToast('Safari에서 공유 버튼을 눌러 "홈 화면에 추가"를 선택하세요');
+  }
+}
+
+// ==================== SERVICE WORKER ====================
+const swCode = `
+self.addEventListener('install', e => {
+  e.waitUntil(self.skipWaiting());
+});
+self.addEventListener('activate', e => {
+  e.waitUntil(self.clients.claim());
+});
+self.addEventListener('fetch', e => {
+  e.respondWith(fetch(e.request).catch(() => new Response('Offline')));
+});
+`;
+
+if ('serviceWorker' in navigator) {
+  const swBlob = new Blob([swCode], {type: 'application/javascript'});
+  const swURL = URL.createObjectURL(swBlob);
+  navigator.serviceWorker.register(swURL).catch(() => {});
+}
+
+// Init
+applyLang();
+</script>
+
+</body>
+</html>
