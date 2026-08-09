@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#050b12">
+<title>BOOKING | JONE GOLF</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="assets/icon-192.png">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body class="">
+
+<header class="header">
+  <div class="container header-inner">
+    <a class="brand" href="index.html"><span class="brand-j">J</span><span class="brand-text"><b>JONE GOLF</b><span>INTERNATIONAL</span></span></a>
+    <nav class="nav">
+      <a href="index.html">HOME</a>
+      <a href="profile.html" data-i18n="profile">PROFILE</a>
+      <a href="lesson.html" data-i18n="lesson">LESSON</a>
+      <a href="program.html" data-i18n="program">PROGRAM</a>
+      <a href="tour.html" data-i18n="tour">TOUR</a>
+      <a href="booking.html" class="active" data-i18n="booking">BOOKING</a>
+    </nav>
+    <div class="lang"><button data-lang="ko">KOR</button><span>|</span><button data-lang="zh">中文</button><span>|</span><button data-lang="en">ENG</button></div>
+    <button class="mobile-menu" aria-label="menu">☰</button>
+  </div>
+</header>
+
+
+<main>
+<section class="booking-hero">
+  <div class="container">
+    <h1 data-i18n="bookTitle">예약 신청</h1>
+    <div class="kicker" style="font-size:25px">당신만을 위한 맞춤형 골프 경험을 시작하세요.</div>
+    <p style="max-width:540px;font-size:18px">스페셜 맞춤 레슨 또는 투어 레슨을 선택하시고,<br>간단한 정보만 남겨주시면 JONE GOLF가<br>당신께 꼭 맞는 특별 프로그램을 설계해 드립니다.</p>
+  </div>
+</section>
+<section class="container grid booking-wrap">
+  <form class="card booking-form" id="bookingForm">
+    <h2>01　프로그램 선택 <span class="small">(하나를 선택해 주세요)</span></h2>
+    <div class="grid program-picks">
+      <label class="pick active"><input type="radio" name="program" value="스페셜 맞춤 레슨" checked hidden><div class="icon">★</div><h2>스페셜 맞춤 레슨</h2><p>1:1 맞춤 집중 레슨<br>당신만을 위한 특별 프로그램</p></label>
+      <label class="pick"><input type="radio" name="program" value="투어 레슨" hidden><div class="icon">◎</div><h2>투어 레슨</h2><p>해외 골프 투어와 함께하는<br>레슨 & 라운드 프로그램</p></label>
+    </div>
+    <div class="field-row"><label>02　성명</label><input required name="name" placeholder="이름을 입력해 주세요"></div>
+    <div class="field-row"><label>03　연락처</label><input required name="contact" placeholder="전화번호 / 카카오톡 ID / 위챗 ID 등"></div>
+    <div class="field-row"><label>04　나이</label><input name="age" inputmode="numeric" placeholder="예) 40"></div>
+    <div class="field-row"><label>05　골프 구력</label><select name="career"><option value="">선택해 주세요</option><option>1년 미만</option><option>1~3년</option><option>4~9년</option><option>10~19년</option><option>20년 이상</option></select></div>
+    <div class="field-row"><label>06　특이 요구사항</label><textarea name="requests" placeholder="원하시는 지역, 일정, 현재 고민, 동반 가족, 특별히 원하는 레슨 내용 등을 자유롭게 적어주세요."></textarea></div>
+    <button class="btn" style="width:100%;justify-content:center;font-size:22px" type="submit">▣　예약 신청하기　→</button>
+    <p class="small" style="text-align:center">입력하신 정보는 예약 상담 용도로만 사용됩니다.</p>
+  </form>
+  <aside class="card booking-side">
+    <h2>JONE GOLF가 제공하는 가치</h2>
+    <div class="value"><div class="vicon">♙</div><div><b>전문 레슨 & 코칭</b><br><span class="small">30년 이상의 경험과 노하우로 수준별 맞춤 레슨 제공</span></div></div>
+    <div class="value"><div class="vicon">⚑</div><div><b>명문 골프 코스 경험</b><br><span class="small">세계 각국의 명문 코스에서 최고의 라운드 경험</span></div></div>
+    <div class="value"><div class="vicon">✈</div><div><b>프리미엄 투어 서비스</b><br><span class="small">숙박 · 식사 · 교통 · 라운드까지 편안한 토탈 케어</span></div></div>
+    <div class="value"><div class="vicon">♧</div><div><b>맞춤형 일정 설계</b><br><span class="small">당신의 목적과 스타일에 맞춘 프로그램 설계</span></div></div>
+    <div class="value"><div class="vicon">✓</div><div><b>안전 & 신뢰</b><br><span class="small">현지 전문 인력과 함께하는 안전한 서비스</span></div></div>
+    <hr style="border:0;border-top:1px solid var(--line)">
+    <h3>문의 & 상담</h3>
+    <p>🇰🇷 한국　<a href="tel:01094247222">010-9424-7222</a><br>🇨🇳 중국　<a href="tel:18502157079">18502157079</a><br>✉️　<a href="mailto:jonegolf@qq.com">jonegolf@qq.com</a></p>
+  </aside>
+</section>
+<section class="container">
+  <div class="card grid process">
+    <div class="item"><strong>01　예약 신청</strong><span>위 양식으로 간단히 신청서를 제출합니다.</span></div>
+    <div class="item"><strong>02　가격 결정 & 선금(20%) 입금</strong><span>맞춤 일정과 가격을 안내받고 총액의 20%를 선금으로 입금합니다.</span></div>
+    <div class="item"><strong>03　계약 완료</strong><span>입금 확인 후 계약이 완료되고 최종 일정이 확정됩니다.</span></div>
+  </div>
+  <div class="family-banner">
+    <img src="assets/booking-family.jpg" alt="아이를 동반한 가족 골프 라운딩">
+    <div class="overlay"><div><h2>Play the world,<br>Better your game.</h2><p>전 세계, 당신만을 위한 특별한 골프 경험</p></div></div>
+  </div>
+  <div class="grid feature-row" style="margin:25px 0 55px">
+    <div class="card"><h3 class="gold">30년 이상의 경험</h3><p>프로 코치 및 아마추어 지도 경력</p></div>
+    <div class="card"><h3 class="gold">세계 주요 지역 네트워크</h3><p>아시아 · 유럽 · 미주 등 다양한 해외 파트너십</p></div>
+    <div class="card"><h3 class="gold">수많은 만족 후기</h3><p>실력 향상과 즐거운 여행을 함께한 고객들의 신뢰</p></div>
+    <div class="card"><h3 class="gold">최고 수준의 서비스</h3><p>프리미엄 퀄리티로 특별한 골프 경험 제공</p></div>
+  </div>
+</section>
+</main>
+
+
+<footer class="footer">
+  <div class="container footer-row">
+    <div class="brand"><span class="brand-j">J</span><span class="brand-text"><b>JONE GOLF</b><span>INTERNATIONAL</span></span></div>
+    <div class="contacts">
+      <a href="tel:01094247222">한국 010-9424-7222</a>
+      <a href="tel:18502157079">중국 18502157079</a>
+      <a href="mailto:jonegolf@qq.com">jonegolf@qq.com</a>
+    </div>
+    <div class="small">Play the world, Better your game.</div>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+</body></html>
